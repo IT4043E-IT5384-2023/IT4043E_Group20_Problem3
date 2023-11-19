@@ -1,0 +1,10 @@
+{
+  "USERNAME" : "",
+  "PASSWORD" : "",
+
+  "PATH2USERNAMELIST" : "./CoinUser.csv",
+
+  "PAGES" : 3,
+  "WAITTIME" : 25
+}
+
