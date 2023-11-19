@@ -2,7 +2,7 @@
 
 1. Install the requirement:
 ```
-pip install -r requirement.txt
+pip install -r requirements.txt
 ```
 
 2. Fill config.json file:
