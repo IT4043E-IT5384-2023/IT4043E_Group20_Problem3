@@ -22,7 +22,7 @@ def crawl(app, username, pages, wait_time, output_dir, producer=None, topic=None
         print(user)
     except:
         print("User {} not found!!!".format(username))
-        return 1
+        return 0
     
     start = datetime.now().timestamp()
     try:
@@ -86,5 +86,5 @@ if __name__ == '__main__':
                     break
                 else:
                     print('Waitting...')
-                    time.sleep(30)
+                    time.sleep(60)
                     print('Trying again, {} times left.'.format(2 - i))
