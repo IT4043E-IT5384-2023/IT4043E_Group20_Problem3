@@ -10,7 +10,7 @@ pip install -r requirements.txt
 "USERNAME" : twitter username
 "PASSWORD" : twitter password
 
-"PATH2USERNAMELIST" : pasth to a csv file storing usernames with column name 'username'.
+"PATH2USERNAMELIST" : path to a .txt file storing list of usernames with newline seperator.
 
 "PAGES" : number of pages crawled for each user.
 "WAITIME" : number of seconds to wait between multiple requests.

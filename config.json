@@ -2,9 +2,9 @@
   "USERNAME" : "",
   "PASSWORD" : "",
 
-  "PATH2USERNAMELIST" : "./CoinUser.csv",
+  "PATH2USERNAMELIST" : "",
 
   "PAGES" : 3,
-  "WAITTIME" : 25
+  "WAITTIME" : 32
 }
 
