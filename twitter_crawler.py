@@ -78,7 +78,8 @@ if __name__ == '__main__':
     app.sign_in(twitter_username, twitter_password)
 
     with open(config['PATH2USERNAMELIST']) as f:
-        usernames = f.read().split('\n')
+        usernames = f.read().strip().split('\n')
+        print(usernames)
         for username in usernames:
             for i in range(3):
                 status = crawl(app, username, config['PAGES'], config['WAITTIME'], args.output, producer, topic)
@@ -88,3 +89,6 @@ if __name__ == '__main__':
                     print('Waitting...')
                     time.sleep(60)
                     print('Trying again, {} times left.'.format(2 - i))
+    
+    if producer is not None:
+        producer.close()
