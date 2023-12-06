@@ -14,7 +14,8 @@ def save_tweet(tweet, save_path, producer):
 
     if producer is not None:
         with open(os.path.join(save_path, '{}.json'.format(tweet.id)), 'r') as f:
-            producer.send(topic, json.dumps(json.load(f), ensure_ascii=False).encode('utf-8'))
+            future = producer.send(topic, json.dumps(json.load(f), ensure_ascii=False).encode('utf-8'))
+            print(future.get(timeout=10))
 
 def crawl(app, username, pages, wait_time, output_dir, producer=None, topic=None):
     try:
