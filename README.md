@@ -18,9 +18,9 @@ pip install -r requirements.txt
 
 3.Run the crawler:
 ```
-python twitter_crawler.py --config <PATH_TO_CONFIG_FILE> --output <PATH_TO_OUTPUT_FOLDER>
+python twitter_crawler.py --config <PATH_TO_CONFIG_FILE> --output <PATH_TO_OUTPUT_FOLDER> --kafka <KAFKA_SERVER_IP:PORT TOPIC> 
 ```
 Ex:
 ```
-python twitter_crawler.py --config ./config.json --output ./data_raw/
+python twitter_crawler.py --config ./config.json --output ./data_raw/ --kafka 69.69.69.69 topic_0
 ```
