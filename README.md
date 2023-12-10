@@ -13,7 +13,7 @@ root
  |-- followers_count: integer (nullable = true)
  |-- friends_count: integer (nullable = true)
  |-- normal_followers_count: integer (nullable = true)
- |-- protected: string (nullable = true)
+ |-- protected: boolean (nullable = true)
  |-- verified: boolean (nullable = true)
  |-- tweets: array (nullable = false)
  |    |-- element: struct (containsNull = false)
@@ -25,12 +25,12 @@ root
  |    |    |-- reply_counts: integer (nullable = true)
  |    |    |-- quote_counts: integer (nullable = true)
  |    |    |-- bookmark_count: integer (nullable = true)
- |    |    |-- views: string (nullable = true)
+ |    |    |-- views: integer (nullable = true)
  |    |    |-- likes: integer (nullable = true)
  |    |    |-- retweet_counts: integer (nullable = true)
 ```
 
-##### Code execution
+##### Code Execution
 1. Install the requirement:
 ```
 pip install -r requirements.txt
