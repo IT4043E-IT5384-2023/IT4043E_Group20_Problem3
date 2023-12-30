@@ -8,12 +8,12 @@ import argparse
 from datetime import datetime
 import time
 
-def save_tweet(tweet, save_path, producer):
-    with open(os.path.join(save_path, '{}.json'.format(tweet.id)), 'w') as f:
+def save_tweet(tweet, save_path, producer, topic):
+    with open(os.path.join(save_path, '{}.json'.format(tweet.id)), 'w', encoding='utf-8') as f:
         json.dump(tweet, f, default=str, ensure_ascii=False)
 
     if producer is not None:
-        with open(os.path.join(save_path, '{}.json'.format(tweet.id)), 'r') as f:
+        with open(os.path.join(save_path, '{}.json'.format(tweet.id)), 'r', encoding='utf-8') as f:
             future = producer.send(topic, json.dumps(json.load(f), ensure_ascii=False).encode('utf-8'))
             print(future.get(timeout=10))
 
@@ -26,31 +26,31 @@ def crawl(app, username, pages, wait_time, output_dir, producer=None, topic=None
         return 0
     
     start = datetime.now().timestamp()
-    try:
-        print('Start scraping...{}.'.format(username))
-        tweets_list = app.get_tweets(username, pages, wait_time=wait_time)
+    # try:
+    print('Start scraping...{}.'.format(username))
+    tweets_list = app.get_tweets(username, pages, wait_time=wait_time)
 
-        print("Scraping completed, saving...")
-        os.mkdir(os.path.join(output_dir, username))
-        for tweets in tweets_list:
-            if type(tweets) is Tweet:
-                save_tweet(tweets, os.path.join(output_dir, username), producer)
-            elif type(tweets) is SelfThread:
-                for tweet in tweets:
-                    save_tweet(tweet, os.path.join(output_dir, username), producer)
-        
-        end = datetime.now().timestamp()
-        print('{}, Done in {} second!'.format(username, end - start))
-        return 1
-    except:
-        print('Something went fucked!!!')
-        return 0
+    print("Scraping completed, saving...")
+    os.mkdir(os.path.join(output_dir, username))
+    for tweets in tweets_list:
+        if type(tweets) is Tweet:
+            save_tweet(tweets, os.path.join(output_dir, username), producer, topic)
+        elif type(tweets) is SelfThread:
+            for tweet in tweets:
+                save_tweet(tweet, os.path.join(output_dir, username), producer, topic)
+    
+    end = datetime.now().timestamp()
+    print('{}, Done in {} second!'.format(username, end - start))
+    return 1
+    # except:
+    #     print('Something went fucked!!!')
+    #     return 0
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config", type=str, default='./config.json', help="path to JSON config file")
-    parser.add_argument("--output", type=str, help="path to JSON output directory")
-    parser.add_argument("--kafka", type=str, nargs=2, default='null', help="import to kafka server IP:PORT TOPIC_NAME")
+    parser.add_argument('--config', type=str, default='./config.json', help='path to JSON config file')
+    parser.add_argument('--output', type=str, default='./data', help='path to JSON output directory')
+    parser.add_argument('--kafka', type=str, nargs=2, default='null', help='import to kafka server IP:PORT TOPIC_NAME')
     args = parser.parse_args()
 
     with open(args.config, 'r') as cff:
@@ -58,15 +58,13 @@ if __name__ == '__main__':
 
     if os.path.exists(args.output):
         shutil.rmtree(args.output)
-        os.mkdir(args.output)
-    else:
-        os.mkdir(args.output)
+    os.mkdir(args.output)
 
     producer = None
     topic = None
     if args.kafka != 'null':
         print('Connecting to kafka server...')
-        producer = KafkaProducer(bootstrap_servers = [args.kafka[0]])
+        producer = KafkaProducer(bootstrap_servers=[args.kafka[0]])
         print('Kafka connected!!!')
         topic = args.kafka[1]
         print('Kafka server: {}'.format(args.kafka[0]))

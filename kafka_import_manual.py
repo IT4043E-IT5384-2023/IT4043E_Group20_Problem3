@@ -3,6 +3,7 @@ import glob
 import json
 from kafka import KafkaProducer
 import argparse
+import time
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -21,9 +22,9 @@ if __name__ == '__main__':
     num_file = len(glob.glob(os.path.join(args.input_dir, '**/*.json'), recursive=True))
     for i, file in enumerate(glob.glob(os.path.join(args.input_dir, '**/*.json'), recursive=True)):
         print('Sending [{}/{}] {}'.format(i + 1, num_file, file))
-        with open(file, 'r') as f:
+        with open(file, 'r', encoding='utf-8') as f:
             future = producer.send(topic, json.dumps(json.load(f), ensure_ascii=False).encode('utf-8'))
-            # producer.flush()
-            print(future.get(timeout=10))
+            print(future.get(timeout=30))
+        time.sleep(5)
 
     producer.close()

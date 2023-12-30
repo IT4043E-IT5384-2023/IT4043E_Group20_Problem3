@@ -1,2 +1,7 @@
 tweety-ns
 kafka-python
+pyspark
+numpy
+pandas
+scikit-learn
+elasticsearch

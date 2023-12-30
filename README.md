@@ -47,11 +47,36 @@ pip install -r requirements.txt
 "WAITIME" : number of seconds to wait between multiple requests.
 ```
 
-4.Run the crawler:
+3. Run the spark scripts:
 ```
-python twitter_crawler.py --config <PATH_TO_CONFIG_FILE> --output <PATH_TO_OUTPUT_FOLDER> --kafka <KAFKA_SERVER_IP:PORT TOPIC> 
+python spark_stream.py <SPARK_SERVER_IP> <NAME> \
+    --kafka_in <KAFKA_SERVER_IP:PORT> <TOPIC> \
+    --kafka_out <KAFKA_SERVER_IP:PORT> <TOPIC> \
 ```
 Ex:
 ```
-python twitter_crawler.py --config ./config.json --output ./data_raw/ --kafka 69.69.69.69 topic_0
+python spark_stream.py local[*] stream \
+    --kafka_in 69.69.69.69 topic_0_in \
+    --kafka_out 69.69.69.69 topic_0_out \
 ```
+3. Run the kafka consumer:
+```
+python kafka_consumer.py <KAFKA_SERVER_IP:PORT> <TOPIC>
+```
+Ex:
+```
+python kafka_consumer.py  69.69.69.69 topic_0_out
+```
+5. Run the crawler:
+```
+python twitter_crawler.py
+    --config <PATH_TO_CONFIG_FILE>
+    --output <PATH_TO_OUTPUT_FOLDER>
+    --kafka <KAFKA_SERVER_IP:PORT> <TOPIC> 
+```
+Ex:
+```
+python twitter_crawler.py --config ./config.json --output ./data_raw/ --kafka 69.69.69.69 topic_0_in
+```
+6. Prcocess data and write to elasticsearch
+Load pretrained model and predict the account quality then import to elasticsearch for querying and visualization.
