@@ -21,15 +21,6 @@ if __name__ == '__main__':
     
     spark = SparkSession.builder.appName(args.name).master(args.master).getOrCreate()
     
-    options = {
-    "kafka.sasl.jaas.config": 'org.apache.kafka.common.security.plain.PlainLoginModule required username="USERNAME" password="PASSWORD";',
-    "kafka.sasl.mechanism": "PLAIN",
-    "kafka.security.protocol" : "SASL_SSL",
-    "kafka.bootstrap.servers": bootstrap_servers,
-    "group.id": group_id,
-    "subscribe": topic,
-}
-    
     df = spark.readStream \
         .format('kafka') \
         .option('kafka.bootstrap.servers', args.kafka_in[0]) \
